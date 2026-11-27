@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Freikugel — ちいさな方舟と、おおきなほしの物語</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--k:#0b0b0c;--b:#1636ff;--w:#d9d5ca;--g:#8d8a82;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:56px;background:var(--k)}
+body{background:var(--k);color:var(--w);font-family:"Zen Kaku Gothic New",sans-serif;line-height:1.9;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.mono{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;line-height:1.6}
+.disp{font-family:"Archivo Black","Zen Kaku Gothic New",sans-serif;text-transform:uppercase;line-height:.82;letter-spacing:-.03em}
+/* grain */
+.grain{position:fixed;inset:-50%;width:200%;height:200%;pointer-events:none;z-index:90;opacity:.2;mix-blend-mode:screen;
+background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.4 -.55'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+animation:jit .9s steps(1) infinite}
+@keyframes jit{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}}
+/* intro */
+.intro{position:fixed;inset:0;z-index:100;background:var(--k);display:flex;flex-direction:column;justify-content:space-between;padding:24px;transition:transform .9s cubic-bezier(.76,0,.24,1)}
+.intro.out{transform:translateY(-101%)}
+.intro .n{font-size:clamp(80px,22vw,260px);color:var(--b)}
+.intro .bar{height:2px;background:#222;margin-top:12px}.intro .bar i{display:block;height:100%;background:var(--w);width:0;transition:width 1.3s cubic-bezier(.6,0,.2,1)}
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;height:56px;padding-top:env(safe-area-inset-top,0px);display:flex;justify-content:space-between;align-items:center;padding-inline:20px;mix-blend-mode:difference;color:#fff}
+nav ul{display:flex;gap:28px;list-style:none}
+nav a:hover{text-decoration:underline;text-underline-offset:4px}
+.burger{display:none}
+@media(max-width:760px){
+ nav ul{position:fixed;inset:0;background:var(--b);flex-direction:column;justify-content:center;padding:32px;gap:8px;transform:translateX(100%);transition:transform .5s cubic-bezier(.76,0,.24,1);mix-blend-mode:normal}
+ nav ul.open{transform:none}
+ nav ul a{font-family:"Archivo Black";font-size:13vw;text-transform:uppercase;line-height:1.05;color:var(--k)}
+ .burger{display:block;position:relative;z-index:2}
+ nav .id{position:relative;z-index:2}
+}
+section{position:relative;padding:clamp(72px,10vw,150px) clamp(20px,4vw,56px)}
+.label{display:flex;gap:16px;align-items:center;margin-bottom:28px}
+.label b{font-weight:500;padding:2px 8px;background:currentColor}.label b span{color:var(--k);mix-blend-mode:normal}
+/* photo */
+.ph{position:relative;overflow:hidden;background:#17171a}
+.ph img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(.35) contrast(1.1)}
+.ph .empty{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:space-between;padding:12px;color:var(--g);border:1px solid #2b2b30;
+background-image:linear-gradient(#2b2b30,#2b2b30),linear-gradient(#2b2b30,#2b2b30);background-size:1px 28px,28px 1px;background-repeat:no-repeat;background-position:center,center}
+/* TOP */
+#top{min-height:100svh;padding-top:96px;display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:auto 1fr auto;gap:0 12px}
+#top .photo{grid-column:5/13;grid-row:1/3;height:min(78svh,760px);margin-right:calc(-1*clamp(20px,4vw,56px))}
+#top h1{grid-column:1/13;grid-row:2/4;align-self:end;position:relative;z-index:2;font-size:clamp(64px,19.5vw,330px);margin-left:-.04em;mix-blend-mode:difference;color:#fff}
+#top h1 span{display:block}#top h1 .l2{margin-left:clamp(40px,22vw,420px)}
+#top .vert{grid-column:1/2;grid-row:1/2;writing-mode:vertical-rl;color:var(--w);font-size:clamp(13px,1.5vw,18px);letter-spacing:.3em;font-weight:700;align-self:start}
+#top .meta{grid-column:1/5;grid-row:1/2;align-self:end;padding-bottom:10px;margin-left:44px;z-index:3}
+#top .meta .big{font-family:"Archivo Black";font-size:clamp(28px,4.4vw,64px);line-height:.95;color:var(--b);margin-top:8px}
+#top .foot{grid-column:1/13;display:flex;flex-wrap:wrap;gap:20px 40px;justify-content:space-between;align-items:flex-end;margin-top:28px;border-top:1px solid #333;padding-top:18px}
+.cta{display:inline-flex;align-items:center;gap:20px;background:var(--b);color:#fff;padding:18px 26px;font-weight:900;letter-spacing:.08em}
+.cta:hover{background:var(--w);color:var(--k)}
+.bc{display:block;height:38px;width:150px;fill:currentColor}
+@media(max-width:760px){
+ #top{grid-template-rows:auto auto auto auto}
+ #top{padding-top:80px}
+ #top .meta{grid-column:1/13;grid-row:1;margin-left:0;padding-bottom:0}
+ #top .vert{grid-column:1/2;grid-row:2;margin-top:24px;font-size:12px;letter-spacing:.2em;line-height:1.5;align-self:start;z-index:3}
+ #top .photo{grid-column:2/13;grid-row:2;height:50svh;margin-top:24px}
+ #top h1{grid-row:3;margin-top:-.15em}#top .l2{margin-left:18vw}
+ nav{background:var(--k);mix-blend-mode:normal;color:var(--w)}
+ .ho .picker .row button{min-width:56px;padding:12px 12px}
+ .cta{width:100%;justify-content:space-between}
+ #top .foot{grid-row:4}
+}
+/* ABOUT */
+#about{background:var(--w);color:var(--k)}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:0 clamp(12px,2vw,28px)}
+#about .side{grid-column:1/4}
+#about .side .disp{font-size:clamp(90px,16vw,240px);color:var(--b);margin-top:-.05em}
+#about .lead{grid-column:4/13;font-weight:900;font-size:clamp(26px,4.3vw,66px);line-height:1.35;letter-spacing:-.02em}
+#about .lead em{font-style:normal;background:var(--b);color:var(--w);padding:0 .15em}
+#about .body{grid-column:6/12;margin-top:48px;font-size:15px;font-weight:500}
+#about .body p+p{margin-top:1.4em}
+.ho{grid-column:1/13;margin-top:clamp(70px,9vw,130px);background:var(--k);color:var(--w);display:grid;grid-template-columns:5fr 7fr;margin-inline:calc(-1*clamp(20px,4vw,56px));padding:clamp(28px,5vw,64px) clamp(20px,4vw,56px)}
+.ho h3{font-family:"Archivo Black";font-size:clamp(34px,6vw,90px);line-height:.88;text-transform:uppercase}
+.ho h3 span{color:var(--b)}
+.ho .picker{border-left:1px solid #333;padding-left:clamp(16px,3vw,44px)}
+.row{display:flex;flex-wrap:wrap;gap:0;margin:8px 0 26px}
+.row button{border:1px solid #444;margin:0 -1px -1px 0;min-width:64px;padding:12px 16px;font-family:"IBM Plex Mono";font-size:14px}
+.row button.on{background:var(--b);border-color:var(--b);color:#fff}
+.row button:hover:not(.on){background:#222}
+.res{font-family:"Archivo Black";font-size:clamp(70px,12vw,170px);line-height:.85;color:var(--b)}
+.ho p.s{font-size:13px;color:var(--g);max-width:34em}
+@media(max-width:860px){
+ #about .side,#about .lead,#about .body{grid-column:1/13}#about .side .disp{font-size:34vw}#about .body{margin-top:28px}
+ .ho{grid-template-columns:1fr;gap:32px}.ho .picker{border:0;padding:0}
+}
+/* SHIP */
+#ship .grid{align-items:start}
+#ship .map{grid-column:1/8;grid-row:1/3;aspect-ratio:4/5;margin-left:calc(-1*clamp(20px,4vw,56px))}
+#ship h2{grid-column:6/13;grid-row:1;font-size:clamp(60px,13vw,220px);position:relative;z-index:2;mix-blend-mode:difference;color:#fff;align-self:start;text-align:right}
+#ship .list{grid-column:8/13;grid-row:2;align-self:end;list-style:none;border-top:2px solid var(--w)}
+#ship .list li{display:grid;grid-template-columns:56px 1fr auto;padding:14px 0;border-bottom:1px solid #333;font-weight:700;align-items:baseline}
+#ship .list li span:first-child,#ship .list li span:last-child{color:var(--b);font-family:"IBM Plex Mono";font-size:11px}
+#ship .note{grid-column:8/13;font-size:14px;margin-top:20px;color:var(--g)}
+@media(max-width:860px){
+ #ship .map{grid-column:1/13;grid-row:2;margin-right:calc(-1*clamp(20px,4vw,56px));aspect-ratio:1}
+ #ship h2{grid-column:1/13;text-align:left}#ship .list,#ship .note{grid-column:1/13;grid-row:auto;margin-top:28px}
+}
+/* ARCHIVE */
+#archive{background:var(--b);color:var(--w)}
+#archive h2{font-size:clamp(60px,15vw,260px);color:var(--k);margin-bottom:clamp(32px,5vw,70px)}
+#archive .intro2{max-width:30em;font-weight:700;margin-left:auto;margin-bottom:40px}
+.log{border-top:3px solid var(--k)}
+.log div{display:grid;grid-template-columns:90px 190px 1fr auto;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid rgba(11,11,12,.55)}
+.log .w{font-family:"Archivo Black";font-size:28px;color:var(--k)}
+.red{height:16px;background:var(--k);width:var(--w2)}
+@media(max-width:700px){.log div{grid-template-columns:64px 1fr;}.log .red{grid-column:1/3}.log .st{display:none}}
+/* QA */
+#qa{background:var(--w);color:var(--k)}
+#qa .grid>div:first-child{grid-column:1/6}
+#qa h2{font-size:clamp(70px,13vw,210px);color:var(--k)}
+#qa h2 i{font-style:normal;color:var(--b)}
+#qa .q{grid-column:6/13;margin-top:clamp(20px,6vw,90px)}
+.item{border-top:2px solid var(--k)}.item:last-child{border-bottom:2px solid var(--k)}
+.item button{width:100%;text-align:left;display:grid;grid-template-columns:48px 1fr 24px;padding:22px 0;font-weight:900;font-size:clamp(17px,2vw,24px);line-height:1.5}
+.item button span:first-child{font-family:"IBM Plex Mono";font-size:12px;color:var(--b);padding-top:6px}
+.item .a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s}.item.open .a{grid-template-rows:1fr}
+.item .a div{overflow:hidden}.item .a p{padding:0 24px 24px 48px;font-weight:500}
+@media(max-width:860px){#qa .grid>div:first-child,#qa .q{grid-column:1/13}}
+footer{padding:48px clamp(20px,4vw,56px) 40px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:flex-end}
+footer .disp{font-size:clamp(40px,9vw,120px);color:var(--b)}
+@media(prefers-reduced-motion:reduce){.grain{animation:none}.intro{transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script type="text/babel">
+const {useState,useEffect}=React;
+
+/* ===== 差し替えポイント =====
+   画像: 下の IMAGES の "" に画像URL(またはdata URI)を入れるだけで置き換わります。
+   Discord: DISCORD_URL に招待リンクを入れてください。 */
+const DISCORD_URL="#";
+const IMAGES={
+  hero:{src:"https://images.unsplash.com/photo-1759327847036-22d9bad214bf?q=80&w=1228&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",alt:"",label:"PHOTO 01 / HERO — 縦長推奨 4:5"},
+  ship:{src:"https://images.unsplash.com/photo-1700862889195-17cdf950b5d0?q=80&w=714&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",alt:"",label:"MAP / DECK PLAN — 船内図を掲載予定"}
+};
+
+const NAV=[["top","TOP"],["about","ABOUT"],["ship","SPACE SHIP"],["archive","ARCHIVE"],["qa","Q&A"]];
+const ROOMS=["A","B","C","D","E"];
+const AGES=[["1","10代"],["2","20代"],["3","30代以上"]];
+const SHIP=[["R-A–E","居住区画","A〜E"],["F-01","食堂",""],["F-02","談話室",""],["F-03","遊戯室",""],["S-01","食料室",""],["+","……ほか",""]];
+const LOG=[["W01","01.01 — 01.07",40],["W02","01.08 — 01.14",62],["W03","01.15 — 01.21",30],["W04","01.22 — 01.28",75],["W05","01.29 — 02.04",50],["W06","02.05 — 02.11",68],["W07","02.12 — 02.18",35],["W08","02.19 — 02.25",58],["END","02.26 — 03.01",82]];
+const QA=[["キャラクターの作成は何人まで？","1人につき1名までとしています。"],["事前関係は組める？","全員初対面のため、難しいです。その代わりといってはなんですが、ストーリー進行と共に育まれる絆を楽しんでいただければと思います。"]];
+
+function Photo({id,className=""}){
+  const p=IMAGES[id];
+  return <div className={"ph "+className}>
+    {p.src?<img src={p.src} alt={p.alt}/>:<div className="empty mono"><span>{p.label}</span><span>NO.{id.toUpperCase()}</span></div>}
+  </div>;
+}
+function Barcode({seed,w=150}){
+  let s=0;for(const c of seed)s=(s*31+c.charCodeAt(0))>>>0;
+  let x=0;const r=[];
+  for(let i=0;i<54;i++){s=(s*1664525+1013904223)>>>0;const k=1+(s>>>24)%4;if(i%2===0)r.push(<rect key={i} x={x} y="0" width={k} height="38"/>);x+=k;}
+  return <svg className="bc" style={{width:w}} viewBox={"0 0 "+x+" 38"} preserveAspectRatio="none" aria-hidden="true">{r}</svg>;
+}
+function Label({n,t,color}){return <div className="label mono" style={{color}}><b><span>{n}</span></b>{t}</div>;}
+
+function Intro(){
+  const [p,setP]=useState(0);const [out,setOut]=useState(false);const [gone,setGone]=useState(false);
+  useEffect(()=>{
+    const a=setTimeout(()=>setP(100),60),b=setTimeout(()=>setOut(true),1500),c=setTimeout(()=>setGone(true),2500);
+    return()=>{clearTimeout(a);clearTimeout(b);clearTimeout(c)};
+  },[]);
+  if(gone)return null;
+  return <div className={"intro"+(out?" out":"")} aria-hidden="true">
+    <div className="mono" style={{display:"flex",justifyContent:"space-between"}}><span>YGG-0001 / SEED VESSEL</span><span>SYSTEM WAKE</span></div>
+    <div><div className="n disp">Frei<br/>kugel</div><div className="mono" style={{marginTop:12}}>目覚めたのは、宇宙船の小さな部屋だった。</div><div className="bar"><i style={{width:p+"%"}}/></div></div>
+  </div>;
+}
+
+function Nav(){
+  const [o,setO]=useState(false);
+  return <nav className="mono">
+    <a className="id" href="#top">FREIKUGEL / YGG-0001</a>
+    <button className="burger mono" onClick={()=>setO(!o)} aria-expanded={o}>{o?"CLOSE":"MENU"}</button>
+    <ul className={o?"open":""}>{NAV.map(([id,t])=><li key={id}><a href={"#"+id} onClick={()=>setO(false)}>{t}</a></li>)}</ul>
+  </nav>;
+}
+
+function Top(){
+  return <section id="top">
+    <div className="vert">ちいさな方舟と、おおきなほしの物語</div>
+    <div className="meta mono">
+      PERIOD / 開催期間
+      <div className="big">2027.01.01<br/>— 03.01</div>
+    </div>
+    <Photo id="hero" className="photo"/>
+    <h1 className="disp"><span>Frei</span><span className="l2">kugel</span></h1>
+    <div className="foot">
+      <div className="mono" style={{maxWidth:300}}>目覚めたのは、<br/>宇宙船の小さな部屋だった。<br/><span style={{color:"var(--g)"}}>SF × 秘匿HO × 宇宙</span></div>
+      <Barcode seed="FREIKUGEL-2027"/>
+      <a className="cta" href={DISCORD_URL} target="_blank" rel="noopener">DISCORDサーバーへ <span>→</span></a>
+    </div>
+  </section>;
+}
+
+function About(){
+  const [room,setRoom]=useState("A");const [age,setAge]=useState("1");
+  return <section id="about">
+    <div className="grid">
+      <div className="side"><Label n="01" t="ABOUT / 概要"/><div className="disp">01</div></div>
+      <p className="lead">種子保管船<em>「ユグドラシル」</em>へようこそ。君たちは幸運なことに、滅んだ地球から抜け出した光栄なる種子です。</p>
+      <div className="body">
+        <p>これから3ヶ月間、宇宙航行を決行し、皆様を新たなる星へと運搬させて頂きます。</p>
+        <p><b>進行</b>　1週間ごとにストーリーが更新されます。参加者の皆様には、キャラクターを使用しそのストーリーに参加していただきます。</p>
+      </div>
+      <div className="ho">
+        <div><Label n="HO" t="秘匿HO"/><h3>Secret<br/><span>HO</span></h3>
+          <p className="s" style={{marginTop:24}}>選ぶのは2つ。「ROOM NUMBER」と「CHARACTER AGE」。この組み合わせで、配られる秘匿の情報が変わります。</p></div>
+        <div className="picker">
+          <div className="mono">01 — ROOM NUMBER / 区画 A〜E</div>
+          <div className="row">{ROOMS.map(r=><button key={r} className={room===r?"on":""} onClick={()=>setRoom(r)}>{r}</button>)}</div>
+          <div className="mono">02 — CHARACTER AGE / 年齢</div>
+          <div className="row">{AGES.map(([k,t])=><button key={k} className={age===k?"on":""} onClick={()=>setAge(k)}>{t}</button>)}</div>
+          <div className="mono" style={{color:"var(--g)"}}>→ 処理上の呼称</div>
+          <div className="res">HO{age}-{room}</div>
+          <p className="s" style={{marginTop:16}}>例：区画Aかつ10代の場合、HO1-Aとして処理します。（全15通り）</p>
+        </div>
+      </div>
+    </div>
+  </section>;
+}
+
+function Ship(){
+  return <section id="ship">
+    <Label n="02" t="SPACE SHIP / 船内"/>
+    <div className="grid">
+      <Photo id="ship" className="map"/>
+      <h2 className="disp">Space<br/>Ship</h2>
+      <ul className="list">{SHIP.map(([c,n,s])=><li key={c}><span>{c}</span><span>{n}</span><span>{s}</span></li>)}</ul>
+      <p className="note">非常に広大な船です。3ヶ月間こもり切りでも全く問題ない設備が整っています。MAPなどは後日掲載予定です。</p>
+    </div>
+  </section>;
+}
+
+function Archive(){
+  return <section id="archive">
+    <Label n="03" t="ARCHIVE / 記録"/>
+    <h2 className="disp">Archive</h2>
+    <p className="intro2">企画内のイベントや出来事の記録。毎週のストーリー更新にあわせて、ここに記録が追加されていきます。</p>
+    <div className="log">{LOG.map(([w,d,l])=><div key={w}>
+      <span className="w">{w}</span><span className="mono">{d}</span>
+      <span className="red" style={{"--w2":l+"%"}}/><span className="mono st">UNRECORDED</span>
+    </div>)}</div>
+  </section>;
+}
+
+function QA_(){
+  const [o,setO]=useState(0);
+  return <section id="qa"><div className="grid">
+    <div><Label n="04" t="Q&amp;A / 疑問点"/><h2 className="disp">Q<i>&amp;</i>A</h2></div>
+    <div className="q">{QA.map(([q,a],i)=><div key={i} className={"item"+(o===i?" open":"")}>
+      <button onClick={()=>setO(o===i?-1:i)}><span>Q{i+1}</span><span>{q}</span><span>{o===i?"−":"+"}</span></button>
+      <div className="a"><div><p>{a}</p></div></div>
+    </div>)}</div>
+  </div></section>;
+}
+
+function App(){
+  return <>
+    <Intro/><Nav/>
+    <main><Top/><About/><Ship/><Archive/><QA_/></main>
+    <footer>
+      <div className="disp">Freikugel</div>
+      <div className="mono" style={{textAlign:"right"}}><Barcode seed="YGG-0001-END" w={120}/><div style={{marginTop:8}}>2027.01.01 — 03.01 / YGG-0001</div></div>
+    </footer>
+    <div className="grain" aria-hidden="true"/>
+  </>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
